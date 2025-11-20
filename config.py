@@ -14,7 +14,7 @@ SELECTOR = {
         "embed": 0,
         "document": "https://docs.openxai.org/"
     },
-    1416417772266590371: {
+    1421724073263759471: {
         "level": "level_2",
         "role": 1420397364782432267,
         "question_count": 5,
@@ -24,3 +24,4 @@ SELECTOR = {
 }
 
 #Selector key is discord channel id, and role is the role id. 
+
