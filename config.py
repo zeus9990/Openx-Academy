@@ -20,8 +20,16 @@ SELECTOR = {
         "question_count": 5,
         "embed": 1,
         "document": "https://medium.com/openxai/openxai-a-permissionless-ai-protocol-90b8934519f1"
+    },
+    1421724529759223878: {
+        "level": "level_3",
+        "role": 1420397400282894428,
+        "question_count": 5,
+        "embed": 2,
+        "document": "https://medium.com/openxai/openxai-a-permissionless-ai-protocol-90b8934519f1"
     }
 }
 
 #Selector key is discord channel id, and role is the role id. 
+
 
