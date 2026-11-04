@@ -10,7 +10,7 @@ class MyClient(commands.Bot):
     def __init__(self):
         super().__init__(
         command_prefix=":::",
-        intents=discord.Intents.none(),
+        intents=discord.Intents.default(),
         case_insensitive=True,
         strip_after_prefix=True,
         )
