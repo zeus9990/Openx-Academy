@@ -17,20 +17,32 @@ class Takequiz(discord.ui.View):
         self.msg = msg
 
     async def option_handler(self, interaction: discord.Interaction, selected_label: str):
-        answer = user_data[interaction.user.id][0]['answer']
-        level = user_data[interaction.user.id][0]['level']
+        questions = user_data.get(interaction.user.id)
+        if not questions:
+            user_data.pop(interaction.user.id, None)
+            self.stop()
+            await interaction.response.edit_message(embed=discord.Embed(description="**This quiz session has expired. Please start the test again.**", color=0xFF0000), view=None)
+            return
+
+        answer = questions[0]['answer']
+        level = questions[0]['level']
         if answer == selected_label:
-            channel_id = user_data[interaction.user.id][0]['channel_id']
-            del user_data[interaction.user.id][0]
-            if len(user_data[interaction.user.id]) == 0:
+            channel_id = questions[0]['channel_id']
+            del questions[0]
+            if len(questions) == 0:
+                user_data.pop(interaction.user.id, None)
+                self.stop()
                 role_id = config.SELECTOR[channel_id]['role']
                 role = interaction.guild.get_role(role_id)
+                if role is None:
+                    print(f"Role {role_id} not found in guild for {level}")
+                    await interaction.response.edit_message(embed=discord.Embed(description="**You passed the test, but the reward role is misconfigured. Please contact an admin.**", color=0xFFA500), view=None)
+                    await update_level_status(user_id=interaction.user.id, level=level, status=True)
+                    return
                 await interaction.response.edit_message(embed=discord.Embed(description=f"**Congratulations, {interaction.user.mention} You have successfully passed the test, and {role.mention} role has been assigned to you.**", color=0x90EE90), view=None)
-                self.stop()
                 await interaction.user.add_roles(role)
                 await update_level_status(user_id=interaction.user.id, level=level, status=True)
-                del user_data[interaction.user.id]
-                
+
             else:
                 embed = discord.Embed(description="**Awesome that's correct answer next question coming in 10 seconds.**", color=0x90EE90)
                 await interaction.response.edit_message(embed=embed, view=None)
